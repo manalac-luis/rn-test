@@ -1,18 +1,25 @@
-import React,{useState} from 'react'
+import React from 'react'
 import {View,Text, TextInput,StyleSheet} from 'react-native'
 
-const TextAreaFormElement = () =>{
-    const [text,setText] = useState("")
+const TextAreaFormElement = ({item,cb}) =>{
+    console.log("item",item)
     return (
-    <View style={styles.boundary}>
+    <View >
+        <Text>{item.props.label}</Text>
         <TextInput 
-            style={styles.input}
+            style={styles.boundary}
             autoCapitalize="none"
             multiline = {true}
             numberOfLines = {4}
             autoCorrect={false}
-            value = {text}
-            onChangeText = { (newValue) =>setText(newValue)}
+         
+            onChangeText = {(data)=>{
+            
+                let name = item.name
+                let retObj  = {}
+                retObj[name] =data
+                cb(retObj)
+            }}
         />
     </View>
     )

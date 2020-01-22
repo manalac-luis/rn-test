@@ -1,24 +1,39 @@
-import React,{useState} from 'react'
+import React,{useEffect} from 'react'
 import {View, StyleSheet,Text,Picker} from 'react-native'
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button'
 
-const YesNoFormElement = ({data}) =>{
+const YesNoFormElement = ({item,cb}) =>{
 
-    [selected,setSelected]=useState(0)
-    
+    let radio_props = [
+        {label: item.props.yesNoLabel[0], value: 0 },
+        {label: item.props.yesNoLabel[1], value: 1 }
+      ]
+    console.log("yesNoLabel",item.props.yesNoLabel)
+
+    useEffect(() => {
+        let name = item.name
+        let retObj  = {}
+        retObj[name] =0
+        cb(retObj)
+      },[]);
+
     return (
- 
-            <Picker
-                style={{width: 100}} 
-                selectedValue={selected}
-                onValueChange={(loc) => {
-                    setSelected(loc)
-                    console.log("loc",loc)
-                }}>
-                {data.map((item, index) => (
-                  <Picker.Item key={index} label={item} value={index} />
-                ))}
-               
-            </Picker>
+        <View>
+            <Text>{item.props.label}</Text>
+            <RadioForm
+                radio_props={radio_props}
+                initial={0}
+                
+                onPress = {(data)=>{
+            
+                    let name = item.name
+                    let retObj  = {}
+                    retObj[name] =data
+                    cb(retObj)
+                }}
+            />
+        </View>
+            
         
         )
 }
@@ -32,19 +47,4 @@ const styles = StyleSheet.create({
 })
 
 export default YesNoFormElement
-/*
-<View style={styles.boundary}>
-        <Text>YesNoFormElement</Text>
-        <Picker
-            style={{height:50,width:100}}
-            selectedValue={selected}
-            onValueChange={(itemValue,itemIndex)=>{
-                setSelected(itemValue)
-                console.log("onValueChange:",itemValue)
-            }}
-        >
-            <Picker.Item label="Yes" value={0} />
-            <Picker.Item label="No" value={1}  />
-        </Picker>
-    </View>
-*/
+//onPress={(value) => {console.log(value)}}
